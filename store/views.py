@@ -32,6 +32,10 @@ def orders(request):
 def change_password(request):
  return render(request, 'app/changepassword.html')
 
-def mobile(request):
- return render(request, 'app/mobile.html')
+def mobile(request, data=None):
+ if data:
+  mobiles = Product.objects.filter(category='M').filter(brand=data)
+ elif data == 'all':
+  mobiles = Product.objects.filter(category='M')
+ return render(request, 'app/mobile.html', {'mobiles': mobiles})
 
