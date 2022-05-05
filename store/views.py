@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from .models import *
+from .forms import CustomerRegistrationForm
 
 class HomeView(View):
  def get(self, request):
@@ -39,3 +40,13 @@ def mobile(request, data=None):
   mobiles = Product.objects.filter(category='M')
  return render(request, 'app/mobile.html', {'mobiles': mobiles})
 
+class CustomerRegistrationView(View):
+ def get(self, request):
+  form = CustomerRegistrationForm()
+  return render(request, 'app/register.html', {'form': form})
+
+ def post(self, request):
+  form = CustomerRegistrationForm(request.POST)
+  if form.is_valid():
+   form.save()
+  return render(request, 'app/register.html', {'form': form})
