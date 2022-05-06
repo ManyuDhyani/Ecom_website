@@ -63,7 +63,7 @@
               <ul class="dropdown-menu" aria-labelledby="profileDropdown">
                 <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
                 <li><a class="dropdown-item" href="{% url 'orders' %}">Orders</a></li>
-                <li><a class="dropdown-item" href="{% url 'changepassword' %}">Change Password</a></li>
+                <li><a class="dropdown-item" href="{% url 'passwordchange' %}">Change Password</a></li>
                 <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
               </ul>
             </li>
@@ -72,7 +72,9 @@
             </li>
             {% else %}
             <li class="nav-item mx-2">
-             <button type="button" class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#exampleModal">Login / Registration</button>
+              <li><a class="dropdown-item text-white" href="{% url 'login' %}">Login</a></li>
+              <li><a class="dropdown-item text-white" href="{% url 'register' %}">Register</a></li>
+<!--             <button type="button" class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#exampleModal">Login / Registration</button>-->
             </li>
             {% endif %}
           </ul>
@@ -85,65 +87,65 @@
     {% block main-content %} {% endblock main-content %}
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-              <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="pills-login-tab" data-bs-toggle="pill" href="#pills-login" role="tab" aria-controls="pills-login" aria-selected="true">Login</a>
-              </li>
-              <li class="nav-item" role="presentation">
-                <a class="nav-link" id="pills-registration-tab" data-bs-toggle="pill" href="#pills-registration" role="tab" aria-controls="pills-registration" aria-selected="false">Registration</a>
-              </li>
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="tab-content" id="pills-tabContent">
-              <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
-                <form>
-                  <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                  </div>
-                  <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1">
-                  </div>
-                  <div class="text-end">
-                    <button type="button" class="btn btn-danger">Login</button>
-                  </div>
-                </form>
-              </div>
-              <div class="tab-pane fade" id="pills-registration" role="tabpanel" aria-labelledby="pills-registration-tab">
-              <form action="" method="post" novalidate class="shadow p-5">
-                  {% csrf_token %}
-                  {% for fm in form %}
-                      <div class="form-group mb-3">
-                          {{fm.label_tag}} {{fm}} <small class="text-danger">{{fm.errors|striptags}}</small>
-                      </div>
-                  {% endfor %}
-                  <input type="submit" value="Submit" class="btn btn-primary">
-                  <br>
-                  <div class="text-center text-primary fw-bold"><small>Existing User ? <a href="{% url 'login' %}" class="text-danger">Login Now</a> </small></div>
-                  {% if form.non_field_errors %}
-                      {% for error in form.non_field_errors %}
-                          <p class="alert alert-danger my-3">{{error}}</p>
-                      {% endfor %}
-                  {% endif %}
-              </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<!--    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--      <div class="modal-dialog modal-dialog-centered">-->
+<!--        <div class="modal-content">-->
+<!--          <div class="modal-header">-->
+<!--            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">-->
+<!--              <li class="nav-item" role="presentation">-->
+<!--                <a class="nav-link active" id="pills-login-tab" data-bs-toggle="pill" href="#pills-login" role="tab" aria-controls="pills-login" aria-selected="true">Login</a>-->
+<!--              </li>-->
+<!--              <li class="nav-item" role="presentation">-->
+<!--                <a class="nav-link" id="pills-registration-tab" data-bs-toggle="pill" href="#pills-registration" role="tab" aria-controls="pills-registration" aria-selected="false">Registration</a>-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--          </div>-->
+<!--          <div class="modal-body">-->
+<!--            <div class="tab-content" id="pills-tabContent">-->
+<!--              <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">-->
+<!--                <form>-->
+<!--                  <div class="mb-3">-->
+<!--                    <label for="exampleInputEmail1" class="form-label">Email</label>-->
+<!--                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">-->
+<!--                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>-->
+<!--                  </div>-->
+<!--                  <div class="mb-3">-->
+<!--                    <label for="exampleInputPassword1" class="form-label">Password</label>-->
+<!--                    <input type="password" class="form-control" id="exampleInputPassword1">-->
+<!--                  </div>-->
+<!--                  <div class="text-end">-->
+<!--                    <button type="button" class="btn btn-danger">Login</button>-->
+<!--                  </div>-->
+<!--                </form>-->
+<!--              </div>-->
+<!--              <div class="tab-pane fade" id="pills-registration" role="tabpanel" aria-labelledby="pills-registration-tab">-->
+<!--              <form action="" method="post" novalidate class="shadow p-5">-->
+<!--                  {% csrf_token %}-->
+<!--                  {% for fm in form %}-->
+<!--                      <div class="form-group mb-3">-->
+<!--                          {{fm.label_tag}} {{fm}} <small class="text-danger">{{fm.errors|striptags}}</small>-->
+<!--                      </div>-->
+<!--                  {% endfor %}-->
+<!--                  <input type="submit" value="Submit" class="btn btn-primary">-->
+<!--                  <br>-->
+<!--                  <div class="text-center text-primary fw-bold"><small>Existing User ? <a href="{% url 'login' %}" class="text-danger">Login Now</a> </small></div>-->
+<!--                  {% if form.non_field_errors %}-->
+<!--                      {% for error in form.non_field_errors %}-->
+<!--                          <p class="alert alert-danger my-3">{{error}}</p>-->
+<!--                      {% endfor %}-->
+<!--                  {% endif %}-->
+<!--              </form>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
 
     <!-- Start Footer -->
     <footer class="container-fluid bg-dark text-center p-2 mt-5">
-        <small class="text-white">Copyright &copy; 2021 || Designed By GeekyShows || </small>
+        <small class="text-white">Copyright &copy; 2022 || Made by Manyu Dhyani || </small>
         <img src="{% static 'app/images/payment.png' %}" alt="" srcset="" class="img-fluid" height="2px">
     </footer> <!-- End Footer -->
 
