@@ -5,7 +5,8 @@ from .forms import LoginForm, Password_Change_Form, Password_Reset_Form, Passwor
 urlpatterns = [
     path('', views.HomeView.as_view(),name="home"),
     path('product-detail/<int:pk>/', views.product_detail.as_view(), name='product-detail'),
-    path('cart/', views.add_to_cart, name='add-to-cart'),
+    path('add-to-cart/', views.add_to_cart, name='add-to-cart'),
+    path('cart/', views.show_cart, name='show_cart'),
     path('buy/', views.buy_now, name='buy-now'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('address/', views.address, name='address'),

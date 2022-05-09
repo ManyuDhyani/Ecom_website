@@ -15,6 +15,9 @@
     <!--Custom CSS-->
     <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
 
+    <!--Font Awesome Icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 
     <title>ShoppingX | {% block title %} {% endblock title %} </title>
   </head>
@@ -68,7 +71,7 @@
               </ul>
             </li>
             <li class="nav-item mx-2">
-             <a href="{% url 'add-to-cart' %}" class="nav-link text-white"><span class="badge bg-danger">4</span> Cart </a>
+             <a href="{% url 'show_cart' %}" class="nav-link text-white"><span class="badge bg-danger">4</span> Cart </a>
             </li>
             {% else %}
             <li class="nav-item mx-2">
