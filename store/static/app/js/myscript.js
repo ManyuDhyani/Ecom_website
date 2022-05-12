@@ -38,3 +38,43 @@ $('.plus-cart').click(function(){
         }
     })
 })
+
+$('.minus-cart').click(function(){
+    var id = $(this).attr("pid").toString();
+    var qty = this.parentNode.children[2]
+    var removed_item = this
+    $.ajax({
+        type: "GET",
+        url: "/minuscart",
+        data: {
+            prod_id: id
+        },
+        success: function(data){
+            qty.innerText = data.quantity
+            if (Number(data.quantity) == 0) {
+                console.log("remove")
+                removed_item.parentNode.parentNode.parentNode.parentNode.remove()
+            }
+            document.getElementById("amount").innerText = data.amount
+            document.getElementById("totalAmount").innerText = data.total_amount
+
+        }
+    })
+})
+
+$('.remove-cart').click(function(){
+    var id = $(this).attr("pid").toString();
+    var removed_item = this
+    $.ajax({
+        type: "GET",
+        url: "/removecart",
+        data: {
+            prod_id: id
+        },
+        success: function(data){
+            document.getElementById("amount").innerText = data.amount
+            document.getElementById("totalAmount").innerText = data.total_amount
+            removed_item.parentNode.parentNode.parentNode.parentNode.remove()
+        }
+    })
+})

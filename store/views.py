@@ -21,7 +21,7 @@ class product_detail(View):
 def add_to_cart(request):
  user = request.user
  product_id = request.GET.get('prod_id')
- Cart(user=user, product_id=int(product_id)).save()
+ Cart.objects.get_or_create(user=user, product_id=int(product_id))
  return redirect('/cart')
 
 def show_cart(request):
@@ -56,14 +56,59 @@ def plus_cart(request):
   for p in cart_product:
    tempamount = (p.quantity * p.product.discounted_price)
    amount += tempamount
-   total_amount = amount + shipping_amount
 
   data = {
    'quantity': c.quantity,
    'amount': amount,
-   'total_amount': total_amount,
+   'total_amount': amount + shipping_amount,
   }
   return  JsonResponse(data)
+
+
+def minus_cart(request):
+ if request.method == 'GET':
+  prod_id = request.GET['prod_id']
+  c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
+  c.quantity -= 1
+  c.save()
+  if c.quantity == 0:
+   c.delete()
+  amount = 0.0
+  shipping_amount = 70.0
+  total_amount = 0.0
+  cart_product = [p for p in Cart.objects.all() if p.user == request.user]
+
+  for p in cart_product:
+   tempamount = (p.quantity * p.product.discounted_price)
+   amount += tempamount
+
+  data = {
+   'quantity': c.quantity,
+   'amount': amount,
+   'total_amount': amount + shipping_amount,
+  }
+  return  JsonResponse(data)
+
+def remove_cart(request):
+ if request.method == 'GET':
+  prod_id = request.GET['prod_id']
+  c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
+  c.delete()
+  amount = 0.0
+  shipping_amount = 70.0
+  total_amount = 0.0
+  cart_product = [p for p in Cart.objects.all() if p.user == request.user]
+
+  for p in cart_product:
+   tempamount = (p.quantity * p.product.discounted_price)
+   amount += tempamount
+
+  data = {
+   'amount': amount,
+   'total_amount': amount + shipping_amount,
+  }
+  return  JsonResponse(data)
+
 
 def buy_now(request):
  return render(request, 'app/buynow.html')
