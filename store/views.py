@@ -110,6 +110,12 @@ def remove_cart(request):
   return  JsonResponse(data)
 
 
+def countCartItem(request):
+ cartItemCount = None
+ if request.user.is_authenticated:
+  cartItemCount = Cart.objects.filter(user=request.user).count()
+ return {'cartItemCount': cartItemCount}
+
 def buy_now(request):
  return render(request, 'app/buynow.html')
 
