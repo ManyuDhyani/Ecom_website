@@ -5,6 +5,7 @@ from django.views import View
 from .models import *
 from .forms import CustomerRegistrationForm, CustomerProfileForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 class HomeView(View):
  def get(self, request):
@@ -24,6 +25,7 @@ def add_to_cart(request):
  Cart.objects.get_or_create(user=user, product_id=int(product_id))
  return redirect('/cart')
 
+@login_required(login_url='/account/login/')
 def show_cart(request):
  if request.user.is_authenticated:
   user = request.user
@@ -116,6 +118,7 @@ def countCartItem(request):
   cartItemCount = Cart.objects.filter(user=request.user).count()
  return {'cartItemCount': cartItemCount}
 
+@login_required(login_url='/account/login/')
 def checkout(request):
  user = request.user
  address = Customer.objects.filter(user=user)
@@ -134,7 +137,7 @@ def checkout(request):
 
  return render(request, 'app/checkout.html', {'address': address, 'total_amount': total_amount, 'cart_items': cart_items})
 
-
+@login_required(login_url='/account/login/')
 def payment_done(request):
  user = request.user
  custid = request.GET.get('custid')
@@ -145,11 +148,12 @@ def payment_done(request):
   c.delete()
  return redirect("orders")
  
-
+@login_required(login_url='/account/login/')
 def address(request):
  address = Customer.objects.filter(user=request.user)
  return render(request, 'app/address.html', {'address': address, 'active': 'btn-primary'})
 
+@login_required(login_url='/account/login/')
 def orders(request):
  orders_placed = OrderPlaced.objects.filter(user=request.user)
  return render(request, 'app/orders.html', {'orders_placed': orders_placed})
