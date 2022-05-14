@@ -136,14 +136,23 @@ def checkout(request):
 
 
 def payment_done(request):
- pass
+ user = request.user
+ custid = request.GET.get('custid')
+ customer = Customer.objects.get(id=custid)
+ cart = Cart.objects.filter(user=user)
+ for c in cart:
+  OrderPlaced(user=user, customer=customer, product=c.product, quantity=c.quantity).save()
+  c.delete()
+ return redirect("orders")
+ 
 
 def address(request):
  address = Customer.objects.filter(user=request.user)
  return render(request, 'app/address.html', {'address': address, 'active': 'btn-primary'})
 
 def orders(request):
- return render(request, 'app/orders.html')
+ orders_placed = OrderPlaced.objects.filter(user=request.user)
+ return render(request, 'app/orders.html', {'orders_placed': orders_placed})
 
 def buynow(request):
  return render(request, 'app/orders.html')
