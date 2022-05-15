@@ -144,7 +144,7 @@ def payment_done(request):
  customer = Customer.objects.get(id=custid)
  cart = Cart.objects.filter(user=user)
  for c in cart:
-  OrderPlaced(user=user, customer=customer, product=c.product, quantity=c.quantity).save()
+  OrderPlaced(user=user, customer=customer, product=c.product, quantity=c.quantity, status='Accepted').save()
   c.delete()
  return redirect("orders")
  
